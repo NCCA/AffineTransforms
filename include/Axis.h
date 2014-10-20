@@ -2,7 +2,7 @@
 #define AXIS_H__
 #include <ngl/Camera.h>
 #include <ngl/ShaderLib.h>
-#include <ngl/TransformStack.h>
+#include <ngl/Transformation.h>
 #include <ngl/VAOPrimitives.h>
 
 /// @file Axis.h
