@@ -1,4 +1,4 @@
-#version 400
+#version 330 core
 precision highp float;
 /// @brief the vertex passed in
 layout (location = 0) in vec3 inVert;

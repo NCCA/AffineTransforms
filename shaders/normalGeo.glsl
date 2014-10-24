@@ -1,4 +1,4 @@
-#version 400
+#version 330 core
 layout(triangles) in;
 layout(line_strip, max_vertices = 8) out;
 

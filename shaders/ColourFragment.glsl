@@ -1,5 +1,4 @@
-#version 400
-/// @file Colour.fs
+#version 330 core
 /// @brief a basic unshaded solid colour shader
 
 layout (location = 0)out vec4 fragColour;
