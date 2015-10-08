@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "GLWindow.h"
+#include "NGLScene.h"
 #include "Axis.h"
 
 /// @namespace Ui our Ui namespace created from the MainWindow class
@@ -38,7 +38,7 @@ private:
     Ui::MainWindow *m_ui;
     //----------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------
-    GLWindow *m_gl;
+    NGLScene *m_gl;
     //----------------------------------------------------------------------------------------------------------------------
     /// \brief override the keyPressEvent inherited from QObject so we can handle key presses.
     /// @param [in] _event the event to process

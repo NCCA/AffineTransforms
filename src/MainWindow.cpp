@@ -2,18 +2,14 @@
 /// @brief basic implementation file for the MainWindow class
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-
+#include <QKeyEvent>
+#include <QColorDialog>
 //----------------------------------------------------------------------------------------------------------------------
 MainWindow::MainWindow( QWidget *parent ) : QMainWindow(parent), m_ui(new Ui::MainWindow)
 {
   // setup the user interface
   m_ui->setupUi(this);
-  // now we create our glwindow class
-  // create an openGL format and pass to the new GLWidget
-  QGLFormat format;
-  format.setVersion(3,2);
-  format.setProfile( QGLFormat::CoreProfile);
-  m_gl = new GLWindow(format,this);
+  m_gl = new NGLScene(this);
   m_ui->s_mainGridLayout->addWidget(m_gl, 0, 0, 6, 6);
 
   // the following code connects the ui components to the GL class
@@ -182,7 +178,7 @@ void MainWindow::keyPressEvent(QKeyEvent *_event  )
   default : break;
   }
   // finally update the GLWindow and re-draw
-  m_gl->updateGL();
+  m_gl->update();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -200,7 +196,7 @@ void MainWindow::changeColour()
     // SetColour method in the GLWindow
     m_gl->setColour(colour.redF(),colour.greenF(),colour.blueF());
     // finally we update the GLWindow.
-    m_gl->updateGL();
+    m_gl->update();
   }
 }
 

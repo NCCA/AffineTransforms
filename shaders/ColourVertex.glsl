@@ -8,7 +8,7 @@ layout (location = 1) in vec2 inUV;
 
 uniform mat4 MVP;
 
-void main(void)
+void main()
 {
   gl_Position = MVP*vec4(inVert,1.0);
 }
