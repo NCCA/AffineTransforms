@@ -102,8 +102,8 @@ void NGLScene::initializeGL()
   // we are creating a shader called Phong
   shader->createShaderProgram("Phong");
   // now we are going to create empty shaders for Frag and Vert
-  shader->attachShader("PhongVertex",ngl::VERTEX);
-  shader->attachShader("PhongFragment",ngl::FRAGMENT);
+  shader->attachShader("PhongVertex",ngl::ShaderType::VERTEX);
+  shader->attachShader("PhongFragment",ngl::ShaderType::FRAGMENT);
   // attach the source
   shader->loadShaderSource("PhongVertex","shaders/PhongVertex.glsl");
   shader->loadShaderSource("PhongFragment","shaders/PhongFragment.glsl");
@@ -138,8 +138,8 @@ void NGLScene::initializeGL()
   m_light->loadToShader("light");
   shader->createShaderProgram("Colour");
 
-   shader->attachShader("ColourVertex",ngl::VERTEX);
-   shader->attachShader("ColourFragment",ngl::FRAGMENT);
+   shader->attachShader("ColourVertex",ngl::ShaderType::VERTEX);
+   shader->attachShader("ColourFragment",ngl::ShaderType::FRAGMENT);
    shader->loadShaderSource("ColourVertex","shaders/ColourVertex.glsl");
    shader->loadShaderSource("ColourFragment","shaders/ColourFragment.glsl");
 
@@ -171,8 +171,8 @@ void NGLScene::initializeGL()
   // load the normal shader
   shader->createShaderProgram("normalShader");
 
-  shader->attachShader("normalVertex",ngl::VERTEX);
-  shader->attachShader("normalFragment",ngl::FRAGMENT);
+  shader->attachShader("normalVertex",ngl::ShaderType::VERTEX);
+  shader->attachShader("normalFragment",ngl::ShaderType::FRAGMENT);
   shader->loadShaderSource("normalVertex","shaders/normalVertex.glsl");
   shader->loadShaderSource("normalFragment","shaders/normalFragment.glsl");
 
