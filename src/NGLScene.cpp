@@ -132,7 +132,7 @@ void NGLScene::initializeGL()
   // transformations
   ngl::Mat4 iv=m_cam->getProjectionMatrix();
   iv.transpose();
-  m_light = new ngl::Light(ngl::Vec3(-2,2,-2),ngl::Colour(1,1,1,1),ngl::Colour(1,1,1,1),ngl::POINTLIGHT);
+  m_light = new ngl::Light(ngl::Vec3(-2,2,-2),ngl::Colour(1,1,1,1),ngl::Colour(1,1,1,1),ngl::LightModes::POINTLIGHT);
   m_light->setTransform(iv);
   // load these values to the shader as well
   m_light->loadToShader("light");
@@ -181,7 +181,7 @@ void NGLScene::initializeGL()
   shader->attachShaderToProgram("normalShader","normalVertex");
   shader->attachShaderToProgram("normalShader","normalFragment");
 
-  shader->attachShader("normalGeo",ngl::GEOMETRY);
+  shader->attachShader("normalGeo",ngl::ShaderType::GEOMETRY);
   shader->loadShaderSource("normalGeo","shaders/normalGeo.glsl");
   shader->compileShader("normalGeo");
   shader->attachShaderToProgram("normalShader","normalGeo");
