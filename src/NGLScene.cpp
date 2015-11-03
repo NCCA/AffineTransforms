@@ -87,15 +87,15 @@ void NGLScene::initializeGL()
   // Now we will create a basic Camera from the graphics library
   // This is a static camera so it only needs to be set once
   // First create Values for the camera position
-  ngl::Vec3 from(0,0,8);
-  ngl::Vec3 to(0,0,0);
-  ngl::Vec3 up(0,1,0);
+  ngl::Vec3 from(0.0f,0.0f,8.0f);
+  ngl::Vec3 to(0.0f,0.0f,0.0f);
+  ngl::Vec3 up(0.0f,1.0f,0.0f);
 
 
-  m_cam= new ngl::Camera(from,to,up);
+  m_cam.set(from,to,up);
   // set the shape using FOV 45 Aspect Ratio based on Width and Height
   // The final two are near and far clipping planes of 0.5 and 10
-  m_cam->setShape(45,(float)720.0/576.0,0.5,10);
+  m_cam.setShape(45.0f,(float)720.0f/576.0f,0.5f,10.0f);
   // now to load the shader and set the values
   // grab an instance of shader manager
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
@@ -130,12 +130,12 @@ void NGLScene::initializeGL()
   // now create our light this is done after the camera so we can pass the
   // transpose of the projection matrix to the light to do correct eye space
   // transformations
-  ngl::Mat4 iv=m_cam->getProjectionMatrix();
+  ngl::Mat4 iv=m_cam.getProjectionMatrix();
   iv.transpose();
-  m_light = new ngl::Light(ngl::Vec3(-2,2,-2),ngl::Colour(1,1,1,1),ngl::Colour(1,1,1,1),ngl::LightModes::POINTLIGHT);
-  m_light->setTransform(iv);
+  ngl::Light light(ngl::Vec3(-2.0f,2.0f,-2.0f),ngl::Colour(1.0f,1.0f,1.0f,1.0f),ngl::Colour(1.0f,1.0f,1.0f,1.0f),ngl::LightModes::POINTLIGHT);
+  light.setTransform(iv);
   // load these values to the shader as well
-  m_light->loadToShader("light");
+  light.loadToShader("light");
   shader->createShaderProgram("Colour");
 
    shader->attachShader("ColourVertex",ngl::ShaderType::VERTEX);
@@ -147,27 +147,21 @@ void NGLScene::initializeGL()
    shader->compileShader("ColourFragment");
    shader->attachShaderToProgram("Colour","ColourVertex");
    shader->attachShaderToProgram("Colour","ColourFragment");
-   // as we now use glsl 400 and layout qualifiers we don't need this anymore
-  //   shader->bindAttribute("Colour",0,"inVert");
-  //   shader->bindAttribute("Colour",1,"inUV");
-  //   shader->bindAttribute("Colour",2,"inNormal");
-
-
    shader->linkProgramObject("Colour");
    (*shader)["Colour"]->use();
   /// now create our primitives for drawing later
 
   ngl::VAOPrimitives *prim=ngl::VAOPrimitives::instance();
-  prim->createSphere("sphere",1.0,40);
-  prim->createCylinder("cylinder",0.5,1.4,40,40);
-  prim->createCone("cone",0.5,1.4,20,20);
-  prim->createDisk("disk",0.5,40);
-  prim->createTrianglePlane("plane",1,1,10,10,ngl::Vec3(0,1,0));
-  prim->createTorus("torus",0.15,0.4,40,40);
+  prim->createSphere("sphere",1.0f,40.0f);
+  prim->createCylinder("cylinder",0.5f,1.4f,40.0f,40.0f);
+  prim->createCone("cone",0.5f,1.4f,20.0f,20.0f);
+  prim->createDisk("disk",0.5f,40.0f);
+  prim->createTrianglePlane("plane",1.0f,1.0f,10.0f,10.0f,ngl::Vec3(0.0f,1.0f,0.0f));
+  prim->createTorus("torus",0.15f,0.4f,40.0f,40.0f);
   // set the bg colour
   glClearColor(0.5,0.5,0.5,0.0);
-  m_axis = new Axis("Colour",1.5);
-  m_axis->setCam(m_cam);
+  m_axis.reset( new Axis("Colour",1.5f));
+  m_axis->setCam(&m_cam);
   // load the normal shader
   shader->createShaderProgram("normalShader");
 
@@ -185,17 +179,13 @@ void NGLScene::initializeGL()
   shader->loadShaderSource("normalGeo","shaders/normalGeo.glsl");
   shader->compileShader("normalGeo");
   shader->attachShaderToProgram("normalShader","normalGeo");
-  // as we now use glsl 400 and layout qualifiers we don't need this anymore
-//  shader->("normalShader",0,"inVert");
-//  shader->bindAttribute("normalShader",1,"inUV");
-//  shader->bindAttribute("normalShader",2,"inNormal");
 
   shader->linkProgramObject("normalShader");
   shader->use("normalShader");
   // now pass the modelView and projection values to the shader
-  shader->setShaderParam1f("normalSize",0.1);
-  shader->setShaderParam4f("vertNormalColour",1,1,0,1);
-  shader->setShaderParam4f("faceNormalColour",1,0,0,1);
+  shader->setShaderParam1f("normalSize",0.1f);
+  shader->setShaderParam4f("vertNormalColour",1.0f,1.0f,0.0f,1.0f);
+  shader->setShaderParam4f("faceNormalColour",1.0f,0.0f,0.0f,1.0f);
 
   shader->setShaderParam1i("drawFaceNormals",true);
   shader->setShaderParam1i("drawVertexNormals",true);
@@ -207,7 +197,7 @@ void NGLScene::initializeGL()
 void NGLScene::resizeGL(int _w, int _h )
 {
   glViewport(0,0,_w,_h);
-  m_cam->setShape(45,(float)_w/_h,0.05,450);
+  m_cam.setShape(45.0f,(float)_w/_h,0.05f,450.0f);
 
 }
 
@@ -220,8 +210,8 @@ void NGLScene::loadMatricesToShader( )
   ngl::Mat3 normalMatrix;
   ngl::Mat4 M;
   M=m_transform*m_mouseGlobalTX;
-  MV=M*m_cam->getViewMatrix();
-  MVP=  MV*m_cam->getProjectionMatrix();
+  MV=M*m_cam.getViewMatrix();
+  MVP=  MV*m_cam.getProjectionMatrix();
   normalMatrix=MV;
   normalMatrix.inverse();
   shader->setShaderParamFromMat4("MV",MV);
@@ -240,8 +230,6 @@ void NGLScene::paintGL()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // Rotation based on the mouse position for our global
   // transform
-
-  m_light->enable();
 
   m_transform.identity();
 
@@ -308,21 +296,14 @@ void NGLScene::paintGL()
       ngl::Mat4 MV;
       ngl::Mat4 MVP;
 
-      MV=m_transform*m_mouseGlobalTX* m_cam->getViewMatrix();
-      MVP=MV*m_cam->getProjectionMatrix();
+      MV=m_transform*m_mouseGlobalTX* m_cam.getViewMatrix();
+      MVP=MV*m_cam.getProjectionMatrix();
       shader->setShaderParamFromMat4("MVP",MVP);
-      shader->setShaderParam1f("normalSize",m_normalSize/10.0);
+      shader->setShaderParam1f("normalSize",m_normalSize/10.0f);
 
       prim->draw( s_vboNames[m_drawIndex]);
     }
-
-
-
-
   m_axis->draw(m_mouseGlobalTX);
-
-
-
 }
 
 //----------------------------------------------------------------------------------------------------------------------
