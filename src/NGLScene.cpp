@@ -7,13 +7,13 @@
 #include <ngl/NGLInit.h>
 #include <ngl/VAOPrimitives.h>
 #include <ngl/ShaderLib.h>
-
+#include <array>
 #include <QDebug>
 #include <QMouseEvent>
-const static float INCREMENT=0.01;
-const static float ZOOM=0.1;
+constexpr float INCREMENT=0.01f;
+constexpr float ZOOM=0.1f;
 
-const  std::string NGLScene::s_vboNames[17]=
+const std::array<std::string,17> s_vboNames={
 {
   "sphere",
   "cylinder",
@@ -32,8 +32,12 @@ const  std::string NGLScene::s_vboNames[17]=
   "buddah",
   "dragon",
   "bunny"
+  }
 };
 
+constexpr auto PhongShader="PhongShader";
+constexpr auto NormalShader="normalShader";
+constexpr auto ColourShader="nglColourShader";
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -56,20 +60,20 @@ NGLScene::NGLScene(QWidget *_parent )
   m_drawIndex=6;
   m_drawNormals=false;
   /// set all our matrices to the identity
-  m_transform=1.0;
-  m_rotate=1.0;
-  m_translate=1.0;
-  m_scale=1.0;
-  m_normalSize=6.0;
-  m_colour.set(0.5,0.5,0.5);
+  m_transform=1.0f;
+  m_rotate=1.0f;
+  m_translate=1.0f;
+  m_scale=1.0f;
+  m_normalSize=6.0f;
+  m_colour.set(0.5f,0.5f,0.5f);
   m_material.setDiffuse(m_colour);
-  m_material.setSpecular(ngl::Colour(0.2,0.2,0.2));
+  m_material.setSpecular(ngl::Colour(0.2f,0.2f,0.2f));
   m_material.setAmbient(ngl::Colour());
-  m_material.setSpecularExponent(20);
-  m_material.setRoughness(0);
-  m_matrixOrder=NGLScene::RTS;
-  m_euler=1.0;
-  m_modelPos.set(0,0,0);
+  m_material.setSpecularExponent(20.0f);
+  m_material.setRoughness(0.0f);
+  m_matrixOrder=NGLScene::MatrixOrder::RTS;
+  m_euler=1.0f;
+  m_modelPos.set(0.0f,0.0f,0.0f);
 }
 
 // This virtual function is called once before the first call to paintGL() or resizeGL(),
@@ -95,37 +99,35 @@ void NGLScene::initializeGL()
   m_cam.set(from,to,up);
   // set the shape using FOV 45 Aspect Ratio based on Width and Height
   // The final two are near and far clipping planes of 0.5 and 10
-  m_cam.setShape(45.0f,(float)720.0f/576.0f,0.5f,10.0f);
+  m_cam.setShape(45.0f,720.0f/576.0f,0.5f,10.0f);
   // now to load the shader and set the values
   // grab an instance of shader manager
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
+
   // we are creating a shader called Phong
-  shader->createShaderProgram("Phong");
+  shader->createShaderProgram(PhongShader);
+
   // now we are going to create empty shaders for Frag and Vert
-  shader->attachShader("PhongVertex",ngl::ShaderType::VERTEX);
-  shader->attachShader("PhongFragment",ngl::ShaderType::FRAGMENT);
+  // use thes string to save typos
+  constexpr auto vertexShader="PhongVertex";
+  constexpr auto fragShader="PhongFragment";
+
+  shader->attachShader(vertexShader,ngl::ShaderType::VERTEX);
+  shader->attachShader(fragShader,ngl::ShaderType::FRAGMENT);
   // attach the source
-  shader->loadShaderSource("PhongVertex","shaders/PhongVertex.glsl");
-  shader->loadShaderSource("PhongFragment","shaders/PhongFragment.glsl");
+  shader->loadShaderSource(vertexShader,"shaders/PhongVertex.glsl");
+  shader->loadShaderSource(fragShader,"shaders/PhongFragment.glsl");
   // compile the shaders
-  shader->compileShader("PhongVertex");
-  shader->compileShader("PhongFragment");
+  shader->compileShader(vertexShader);
+  shader->compileShader(fragShader);
   // add them to the program
-  shader->attachShaderToProgram("Phong","PhongVertex");
-  shader->attachShaderToProgram("Phong","PhongFragment");
-  // now bind the shader attributes for most NGL primitives we use the following
-  // layout attribute 0 is the vertex data (x,y,z)
-  // as we now use glsl 400 and layout qualifiers we don't need this anymore
-//  shader->bindAttribute("Phong",0,"inVert");
-//  // attribute 1 is the UV data u,v (if present)
-//  shader->bindAttribute("Phong",1,"inUV");
-//  // attribute 2 are the normals x,y,z
-//  shader->bindAttribute("Phong",2,"inNormal");
+  shader->attachShaderToProgram(PhongShader,vertexShader);
+  shader->attachShaderToProgram(PhongShader,fragShader);
 
   // now we have associated this data we can link the shader
-  shader->linkProgramObject("Phong");
+  shader->linkProgramObject(PhongShader);
   // and make it active ready to load values
-  (*shader)["Phong"]->use();
+  (*shader)[PhongShader]->use();
 
   // now create our light this is done after the camera so we can pass the
   // transpose of the projection matrix to the light to do correct eye space
@@ -136,19 +138,6 @@ void NGLScene::initializeGL()
   light.setTransform(iv);
   // load these values to the shader as well
   light.loadToShader("light");
-  shader->createShaderProgram("Colour");
-
-   shader->attachShader("ColourVertex",ngl::ShaderType::VERTEX);
-   shader->attachShader("ColourFragment",ngl::ShaderType::FRAGMENT);
-   shader->loadShaderSource("ColourVertex","shaders/ColourVertex.glsl");
-   shader->loadShaderSource("ColourFragment","shaders/ColourFragment.glsl");
-
-   shader->compileShader("ColourVertex");
-   shader->compileShader("ColourFragment");
-   shader->attachShaderToProgram("Colour","ColourVertex");
-   shader->attachShaderToProgram("Colour","ColourFragment");
-   shader->linkProgramObject("Colour");
-   (*shader)["Colour"]->use();
   /// now create our primitives for drawing later
 
   ngl::VAOPrimitives *prim=ngl::VAOPrimitives::instance();
@@ -160,32 +149,35 @@ void NGLScene::initializeGL()
   prim->createTorus("torus",0.15f,0.4f,40.0f,40.0f);
   // set the bg colour
   glClearColor(0.5,0.5,0.5,0.0);
-  m_axis.reset( new Axis("Colour",1.5f));
+  m_axis.reset( new Axis(ColourShader,1.5f));
   m_axis->setCam(&m_cam);
   // load the normal shader
-  shader->createShaderProgram("normalShader");
+  shader->createShaderProgram(NormalShader);
+  constexpr auto normalVert="normalVertex";
+  constexpr auto normalGeo="normalGeo";
+  constexpr auto normalFrag="normalFrag";
 
-  shader->attachShader("normalVertex",ngl::ShaderType::VERTEX);
-  shader->attachShader("normalFragment",ngl::ShaderType::FRAGMENT);
-  shader->loadShaderSource("normalVertex","shaders/normalVertex.glsl");
-  shader->loadShaderSource("normalFragment","shaders/normalFragment.glsl");
+  shader->attachShader(normalVert,ngl::ShaderType::VERTEX);
+  shader->attachShader(normalFrag,ngl::ShaderType::FRAGMENT);
+  shader->loadShaderSource(normalVert,"shaders/normalVertex.glsl");
+  shader->loadShaderSource(normalFrag,"shaders/normalFragment.glsl");
 
-  shader->compileShader("normalVertex");
-  shader->compileShader("normalFragment");
-  shader->attachShaderToProgram("normalShader","normalVertex");
-  shader->attachShaderToProgram("normalShader","normalFragment");
+  shader->compileShader(normalVert);
+  shader->compileShader(normalFrag);
+  shader->attachShaderToProgram(NormalShader,normalVert);
+  shader->attachShaderToProgram(NormalShader,normalFrag);
 
-  shader->attachShader("normalGeo",ngl::ShaderType::GEOMETRY);
-  shader->loadShaderSource("normalGeo","shaders/normalGeo.glsl");
-  shader->compileShader("normalGeo");
-  shader->attachShaderToProgram("normalShader","normalGeo");
+  shader->attachShader(normalGeo,ngl::ShaderType::GEOMETRY);
+  shader->loadShaderSource(normalGeo,"shaders/normalGeo.glsl");
+  shader->compileShader(normalGeo);
+  shader->attachShaderToProgram(NormalShader,normalGeo);
 
-  shader->linkProgramObject("normalShader");
-  shader->use("normalShader");
+  shader->linkProgramObject(NormalShader);
+  shader->use(NormalShader);
   // now pass the modelView and projection values to the shader
-  shader->setShaderParam1f("normalSize",0.1f);
-  shader->setShaderParam4f("vertNormalColour",1.0f,1.0f,0.0f,1.0f);
-  shader->setShaderParam4f("faceNormalColour",1.0f,0.0f,0.0f,1.0f);
+  shader->setUniform("normalSize",0.1f);
+  shader->setUniform("vertNormalColour",1.0f,1.0f,0.0f,1.0f);
+  shader->setUniform("faceNormalColour",1.0f,0.0f,0.0f,1.0f);
 
   shader->setShaderParam1i("drawFaceNormals",true);
   shader->setShaderParam1i("drawVertexNormals",true);
@@ -197,14 +189,14 @@ void NGLScene::initializeGL()
 void NGLScene::resizeGL(int _w, int _h )
 {
   glViewport(0,0,_w,_h);
-  m_cam.setShape(45.0f,(float)_w/_h,0.05f,450.0f);
+  m_cam.setShape(45.0f,static_cast<float>(_w)/_h,0.05f,450.0f);
 
 }
 
 void NGLScene::loadMatricesToShader( )
 {
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
-  (*shader)["Phong"]->use();
+  (*shader)[PhongShader]->use();
   ngl::Mat4 MV;
   ngl::Mat4 MVP;
   ngl::Mat3 normalMatrix;
@@ -233,31 +225,31 @@ void NGLScene::paintGL()
 
   m_transform.identity();
 
-  if (m_matrixOrder == NGLScene::RTS)
+  if (m_matrixOrder == NGLScene::MatrixOrder::RTS)
   {
     m_transform=m_rotate*m_translate*m_scale;
   }
 
-  else if (m_matrixOrder == NGLScene::TRS)
+  else if (m_matrixOrder == NGLScene::MatrixOrder::TRS)
   {
     m_transform=m_translate*m_rotate*m_scale;
   }
-  else if (m_matrixOrder == NGLScene::EULERTS)
+  else if (m_matrixOrder == NGLScene::MatrixOrder::EULERTS)
   {
     m_transform=m_translate*m_euler*m_scale;
   }
-  else if (m_matrixOrder == NGLScene::TEULERS)
+  else if (m_matrixOrder == NGLScene::MatrixOrder::TEULERS)
   {
     m_transform=m_euler*m_translate*m_scale;
   }
 
-  else if (m_matrixOrder == NGLScene::GIMBALLOCK )
+  else if (m_matrixOrder == NGLScene::MatrixOrder::GIMBALLOCK )
   {
     m_transform=m_translate*m_gimbal*m_scale;
   }
   emit matrixDirty(m_transform);
   // now set this value in the shader for the current ModelMatrix
-  (*shader)["Phong"]->use();
+  (*shader)[PhongShader]->use();
 
   m_material.loadToShader("material");
 
@@ -292,14 +284,14 @@ void NGLScene::paintGL()
     prim->draw( s_vboNames[m_drawIndex]);
     if(m_drawNormals)
     {
-      (*shader)["normalShader"]->use();
+      (*shader)[NormalShader]->use();
       ngl::Mat4 MV;
       ngl::Mat4 MVP;
 
       MV=m_transform*m_mouseGlobalTX* m_cam.getViewMatrix();
       MVP=MV*m_cam.getProjectionMatrix();
-      shader->setShaderParamFromMat4("MVP",MVP);
-      shader->setShaderParam1f("normalSize",m_normalSize/10.0f);
+      shader->setUniform("MVP",MVP);
+      shader->setUniform("normalSize",m_normalSize/10.0f);
 
       prim->draw( s_vboNames[m_drawIndex]);
     }
@@ -325,8 +317,8 @@ void NGLScene::mouseMoveEvent (QMouseEvent * _event  )
   // right mouse translate code
   else if(m_translateActive && _event->buttons() == Qt::RightButton)
   {
-    int diffX = (int)(_event->x() - m_origXPos);
-    int diffY = (int)(_event->y() - m_origYPos);
+    int diffX = static_cast<int>(_event->x() - m_origXPos);
+    int diffY = static_cast<int>(_event->y() - m_origYPos);
     m_origXPos=_event->x();
     m_origYPos=_event->y();
     m_modelPos.m_x += INCREMENT * diffX;
@@ -414,7 +406,6 @@ void NGLScene::setNormalSize(int _value)
 }
 //----------------------------------------------------------------------------------------------------------------------
 void NGLScene::setScale(float _x, float _y,float _z )
-
 {
   m_scale.scale(_x,_y,_z);
   update();
@@ -431,9 +422,9 @@ void NGLScene::setTranslate(float _x, float _y, float _z )
 //----------------------------------------------------------------------------------------------------------------------
 void NGLScene::setRotate(float _x,  float _y, float _z  )
 {
-  ngl::Mat4 rx=1.0;
-  ngl::Mat4 ry=1.0;
-  ngl::Mat4 rz=1.0;
+  ngl::Mat4 rx=1.0f;
+  ngl::Mat4 ry=1.0f;
+  ngl::Mat4 rz=1.0f;
   rx.rotateX(_x);
   ry.rotateY(_y);
   rz.rotateZ(_z);
@@ -462,11 +453,11 @@ void NGLScene::setMatrixOrder(int _index  )
 {
   switch(_index)
   {
-    case 0 : { m_matrixOrder=NGLScene::RTS;   break; }
-    case 1 : { m_matrixOrder=NGLScene::TRS;   break; }
-    case 2 : { m_matrixOrder=NGLScene::GIMBALLOCK; break; }
-    case 3 : { m_matrixOrder=NGLScene::EULERTS; break; }
-    case 4 : { m_matrixOrder=NGLScene::TEULERS; break; }
+    case 0 : { m_matrixOrder=NGLScene::MatrixOrder::RTS;   break; }
+    case 1 : { m_matrixOrder=NGLScene::MatrixOrder::TRS;   break; }
+    case 2 : { m_matrixOrder=NGLScene::MatrixOrder::GIMBALLOCK; break; }
+    case 3 : { m_matrixOrder=NGLScene::MatrixOrder::EULERTS; break; }
+    case 4 : { m_matrixOrder=NGLScene::MatrixOrder::TEULERS; break; }
     default : break;
   }
 update();
@@ -475,7 +466,7 @@ update();
 //----------------------------------------------------------------------------------------------------------------------
 void NGLScene::setEuler(float _angle, float _x,  float _y,  float _z )
 {
-  m_euler=1.0;
+  m_euler=1.0f;
   m_euler.euler(_angle,_x,_y,_z);
   update();
 }

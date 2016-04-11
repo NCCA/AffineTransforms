@@ -21,6 +21,391 @@
   </property>
   <widget class="QWidget" name="m_centralwidget">
    <layout class="QGridLayout" name="s_mainGridLayout">
+    <item row="7" column="6" colspan="2">
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <widget class="QPushButton" name="m_colour">
+       <property name="geometry">
+        <rect>
+         <x>291</x>
+         <y>0</y>
+         <width>85</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Colour</string>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item row="2" column="6" colspan="2">
+     <widget class="QTabWidget" name="s_rotateTabWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <widget class="QWidget" name="s_rotateTabWidgetPage1">
+       <attribute name="title">
+        <string>Rotation</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QDoubleSpinBox" name="m_rx">
+          <property name="minimum">
+           <double>-180.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="m_ry">
+          <property name="minimum">
+           <double>-180.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QDoubleSpinBox" name="m_rz">
+          <property name="minimum">
+           <double>-180.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="s_rotZLabel">
+          <property name="text">
+           <string>z</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="s_rotXLabel">
+          <property name="text">
+           <string>x</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="s_rotYLabel">
+          <property name="text">
+           <string>y</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Euler</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="1" column="0">
+         <widget class="QDoubleSpinBox" name="m_eulerAngle">
+          <property name="maximum">
+           <double>360.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="m_eulerXAxis">
+          <property name="minimum">
+           <double>-1.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QDoubleSpinBox" name="m_eulerYAxis">
+          <property name="minimum">
+           <double>-1.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QDoubleSpinBox" name="m_eulerZAxis">
+          <property name="minimum">
+           <double>-1.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" colspan="2">
+         <widget class="QLabel" name="s_eulerAxisLabel">
+          <property name="text">
+           <string>Axis</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="s_eulerAngleLabel">
+          <property name="text">
+           <string>Angle</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="3" column="6" colspan="2">
+     <widget class="QGroupBox" name="s_translateGroupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>Translate</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="1" column="0">
+        <widget class="QDoubleSpinBox" name="m_tx">
+         <property name="minimum">
+          <double>-20.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>20.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="m_ty">
+         <property name="minimum">
+          <double>-20.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>20.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QDoubleSpinBox" name="m_tz">
+         <property name="minimum">
+          <double>-20.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>20.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="s_txLabel">
+         <property name="text">
+          <string>x</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="s_tyLabel">
+         <property name="text">
+          <string>y</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="s_tzLabel">
+         <property name="text">
+          <string>z</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="7" column="3">
+     <widget class="QCheckBox" name="m_normals">
+      <property name="text">
+       <string>normals   size</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="4">
+     <widget class="QSlider" name="m_normalSize">
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>20</number>
+      </property>
+      <property name="pageStep">
+       <number>1</number>
+      </property>
+      <property name="value">
+       <number>6</number>
+      </property>
+      <property name="sliderPosition">
+       <number>6</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="invertedAppearance">
+       <bool>true</bool>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksBothSides</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="6">
+     <widget class="QGroupBox" name="s_scaleGroupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>Scale</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="1" column="0">
+        <widget class="QDoubleSpinBox" name="m_sx">
+         <property name="minimum">
+          <double>-20.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>20.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="m_sy">
+         <property name="minimum">
+          <double>-20.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>20.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QDoubleSpinBox" name="m_sz">
+         <property name="minimum">
+          <double>-20.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>20.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="s_txLabel_2">
+         <property name="text">
+          <string>x</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="s_tyLabel_2">
+         <property name="text">
+          <string>y</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="s_tzLabel_2">
+         <property name="text">
+          <string>z</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
     <item row="0" column="6" colspan="2">
      <widget class="QGroupBox" name="s_matrixGB">
       <property name="sizePolicy">
@@ -395,340 +780,6 @@
       </layout>
      </widget>
     </item>
-    <item row="2" column="6" colspan="2">
-     <widget class="QTabWidget" name="s_rotateTabWidget">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <widget class="QWidget" name="s_rotateTabWidgetPage1">
-       <attribute name="title">
-        <string>Rotation</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="1" column="0">
-         <widget class="QDoubleSpinBox" name="m_rx">
-          <property name="minimum">
-           <double>-180.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>180.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="m_ry">
-          <property name="minimum">
-           <double>-180.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>180.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QDoubleSpinBox" name="m_rz">
-          <property name="minimum">
-           <double>-180.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>180.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="s_rotZLabel">
-          <property name="text">
-           <string>z</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="s_rotXLabel">
-          <property name="text">
-           <string>x</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="s_rotYLabel">
-          <property name="text">
-           <string>y</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab">
-       <attribute name="title">
-        <string>Euler</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="1" column="0">
-         <widget class="QDoubleSpinBox" name="m_eulerAngle">
-          <property name="maximum">
-           <double>360.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="m_eulerXAxis">
-          <property name="minimum">
-           <double>-1.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QDoubleSpinBox" name="m_eulerYAxis">
-          <property name="minimum">
-           <double>-1.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.010000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QDoubleSpinBox" name="m_eulerZAxis">
-          <property name="minimum">
-           <double>-1.000000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.010000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" colspan="2">
-         <widget class="QLabel" name="s_eulerAxisLabel">
-          <property name="text">
-           <string>Axis</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="s_eulerAngleLabel">
-          <property name="text">
-           <string>Angle</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item row="3" column="6" colspan="2">
-     <widget class="QGroupBox" name="s_translateGroupBox">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="title">
-       <string>Translate</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="1" column="0">
-        <widget class="QDoubleSpinBox" name="m_tx">
-         <property name="minimum">
-          <double>-20.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>20.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QDoubleSpinBox" name="m_ty">
-         <property name="minimum">
-          <double>-20.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>20.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QDoubleSpinBox" name="m_tz">
-         <property name="minimum">
-          <double>-20.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>20.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="s_txLabel">
-         <property name="text">
-          <string>x</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="s_tyLabel">
-         <property name="text">
-          <string>y</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="s_tzLabel">
-         <property name="text">
-          <string>z</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="3" column="8">
-     <widget class="QFrame" name="frame_2">
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="6">
-     <widget class="QGroupBox" name="s_scaleGroupBox">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="title">
-       <string>Scale</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <item row="1" column="0">
-        <widget class="QDoubleSpinBox" name="m_sx">
-         <property name="minimum">
-          <double>-20.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>20.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QDoubleSpinBox" name="m_sy">
-         <property name="minimum">
-          <double>-20.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>20.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QDoubleSpinBox" name="m_sz">
-         <property name="minimum">
-          <double>-20.000000000000000</double>
-         </property>
-         <property name="maximum">
-          <double>20.000000000000000</double>
-         </property>
-         <property name="singleStep">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="s_txLabel_2">
-         <property name="text">
-          <string>x</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="s_tyLabel_2">
-         <property name="text">
-          <string>y</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="s_tzLabel_2">
-         <property name="text">
-          <string>z</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
     <item row="7" column="0">
      <widget class="QComboBox" name="m_vboSelection">
       <property name="currentIndex">
@@ -821,6 +872,16 @@
       </item>
      </widget>
     </item>
+    <item row="3" column="8">
+     <widget class="QFrame" name="frame_2">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+    </item>
     <item row="7" column="1">
      <widget class="QPushButton" name="m_reset">
       <property name="text">
@@ -833,67 +894,6 @@
       <property name="text">
        <string>wireframe</string>
       </property>
-     </widget>
-    </item>
-    <item row="7" column="3">
-     <widget class="QCheckBox" name="m_normals">
-      <property name="text">
-       <string>normals   size</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="4">
-     <widget class="QSlider" name="m_normalSize">
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="minimum">
-       <number>1</number>
-      </property>
-      <property name="maximum">
-       <number>20</number>
-      </property>
-      <property name="pageStep">
-       <number>1</number>
-      </property>
-      <property name="value">
-       <number>6</number>
-      </property>
-      <property name="sliderPosition">
-       <number>6</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="invertedAppearance">
-       <bool>true</bool>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBothSides</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="6" colspan="2">
-     <widget class="QFrame" name="frame">
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
-      </property>
-      <widget class="QPushButton" name="m_colour">
-       <property name="geometry">
-        <rect>
-         <x>291</x>
-         <y>0</y>
-         <width>85</width>
-         <height>32</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Colour</string>
-       </property>
-      </widget>
      </widget>
     </item>
    </layout>
