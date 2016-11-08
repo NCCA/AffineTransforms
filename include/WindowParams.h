@@ -1,68 +1,57 @@
-#ifndef AXIS_H_
-#define AXIS_H_
-#include <ngl/Camera.h>
-#include <ngl/ShaderLib.h>
-#include <ngl/Transformation.h>
-#include <ngl/VAOPrimitives.h>
+#ifndef WINDOWPARAMS_H_
+#define WINDOWPARAMS_H_
 
-/// @file Axis.h
-/// @brief simple class to contain and draw an axis
-/// @author Jonathan Macey
-/// @version 1.0
-/// @date 13/10/10
-/// Revision History :
-/// Initial Version 13/10/10
-/// @class Axis
-/// @brief Simple Axis drawing
-class Axis
+struct WinParams
 {
-public:
   //----------------------------------------------------------------------------------------------------------------------
-  /// @brief ctor
-  /// @param[in] _shaderName the name of the shader to invoke when drawing
-  /// @parma[in] _scale uniform scale for the initial construction of the axis
+  /// @brief used to store the x rotation mouse value
   //----------------------------------------------------------------------------------------------------------------------
-  Axis(std::string _shaderName, ngl::Real _scale );
+  int spinXFace = 0;
   //----------------------------------------------------------------------------------------------------------------------
-  /// @brief dtor
+  /// @brief used to store the y rotation mouse value
   //----------------------------------------------------------------------------------------------------------------------
-  ~Axis()=default;
-
+  int spinYFace = 0;
   //----------------------------------------------------------------------------------------------------------------------
-  /// @brief draw method
-  /// @brief pass in the TransformStack for the shader (should have all the tx needed)
+  /// @brief flag to indicate if the mouse button is pressed when dragging
   //----------------------------------------------------------------------------------------------------------------------
-  void draw(const ngl::Mat4 &_globalTx);
+  bool rotate = false;
   //----------------------------------------------------------------------------------------------------------------------
-  /// @brief set the camera for drawing
+  /// @brief flag to indicate if the Right mouse button is pressed when dragging
   //----------------------------------------------------------------------------------------------------------------------
-  inline void setCam(ngl::Camera *_cam){m_cam=_cam;}
-private :
+  bool translate = false;
   //----------------------------------------------------------------------------------------------------------------------
-  /// @brief the name of the shader
+  /// @brief the previous x mouse value
   //----------------------------------------------------------------------------------------------------------------------
-  std::string m_shaderName;
+  int origX = 0;
   //----------------------------------------------------------------------------------------------------------------------
-  /// @brief the scale of the axis
+  /// @brief the previous y mouse value
   //----------------------------------------------------------------------------------------------------------------------
-  ngl::Real m_scale;
+  int origY = 0;
   //----------------------------------------------------------------------------------------------------------------------
-  /// @brief load matrices to the shader
+  /// @brief the previous x mouse value for Position changes
   //----------------------------------------------------------------------------------------------------------------------
-  void loadMatricesToShader();
+  int origXPos = 0;
   //----------------------------------------------------------------------------------------------------------------------
-  /// @brief pointer to the camera use raw pointer as reference
+  /// @brief the previous y mouse value for Position changes
   //----------------------------------------------------------------------------------------------------------------------
-  ngl::Camera *m_cam;
+  int origYPos = 0;
   //----------------------------------------------------------------------------------------------------------------------
-  /// @brief transform stack for drawing
+  /// @brief window width
   //----------------------------------------------------------------------------------------------------------------------
-  ngl::Transformation m_transform;
+  int width = 1024;
   //----------------------------------------------------------------------------------------------------------------------
-  /// @brief global mouse rotation
+  /// @brief window height
   //----------------------------------------------------------------------------------------------------------------------
-  ngl::Mat4 m_globalMouseTx;
-
+  int height = 720;
 };
 
-#endif // AXIS_H
+//----------------------------------------------------------------------------------------------------------------------
+/// @brief the increment for x/y translation with mouse movement
+//----------------------------------------------------------------------------------------------------------------------
+constexpr float INCREMENT = 0.01f;
+//----------------------------------------------------------------------------------------------------------------------
+/// @brief the increment for the wheel zoom
+//----------------------------------------------------------------------------------------------------------------------
+constexpr float ZOOM = 0.1f;
+
+#endif
