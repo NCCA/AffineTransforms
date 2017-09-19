@@ -208,46 +208,46 @@ protected:
   /// @brief  The following methods must be implimented in the sub class
   /// this is called when the window is created
   //----------------------------------------------------------------------------------------------------------------------
-  void initializeGL();
+  void initializeGL() override;
 
   //----------------------------------------------------------------------------------------------------------------------
   /// @brief this is called whenever the window is re-sized
   /// @param[in] _w the width of the resized window
   /// @param[in] _h the height of the resized window
   //----------------------------------------------------------------------------------------------------------------------
-  void resizeGL(const int _w, const int _h  );
+  void resizeGL(const int _w, const int _h  ) override;
   //----------------------------------------------------------------------------------------------------------------------
   /// @brief this is the main gl drawing routine which is called whenever the window needs to
   /// be re-drawn
   //----------------------------------------------------------------------------------------------------------------------
-  void paintGL();
+  void paintGL() override;
 
 private :
   //----------------------------------------------------------------------------------------------------------------------
   /// @brief this method is called every time a mouse is moved
   /// @param _event the Qt Event structure
   //----------------------------------------------------------------------------------------------------------------------
-  void mouseMoveEvent ( QMouseEvent * _event );
+  void mouseMoveEvent ( QMouseEvent * _event ) override;
   //----------------------------------------------------------------------------------------------------------------------
   /// @brief this method is called everytime the mouse button is pressed
   /// inherited from QObject and overridden here.
   /// @param _event the Qt Event structure
   //----------------------------------------------------------------------------------------------------------------------
 
-  void mousePressEvent (QMouseEvent *_event );
+  void mousePressEvent (QMouseEvent *_event ) override;
 
   //----------------------------------------------------------------------------------------------------------------------
   /// @brief this method is called everytime the mouse button is released
   /// inherited from QObject and overridden here.
   /// @param _event the Qt Event structure
   //----------------------------------------------------------------------------------------------------------------------
-  void mouseReleaseEvent (QMouseEvent *_event);
+  void mouseReleaseEvent (QMouseEvent *_event) override;
   //----------------------------------------------------------------------------------------------------------------------
   /// @brief this method is called everytime the mouse wheel is moved
   /// inherited from QObject and overridden here.
   /// @param _event the Qt Event structure
   //----------------------------------------------------------------------------------------------------------------------
-  void wheelEvent(QWheelEvent *_event );
+  void wheelEvent(QWheelEvent *_event ) override;
 
   void loadMatricesToShader();
 

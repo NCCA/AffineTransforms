@@ -23,7 +23,7 @@ void Axis::loadMatricesToShader()
   M=m_transform.getMatrix()*m_globalMouseTx;
   MV=  M*m_cam->getViewMatrix();
   MVP=  MV*m_cam->getProjectionMatrix();
-  shader->setShaderParamFromMat4("MVP",MVP);
+  shader->setUniform("MVP",MVP);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ void Axis::draw(const ngl::Mat4 &_globalTx )
    // set this in the TX stack
   // liberal use of { is encourage after each push
 
-  shader->setShaderParam4f("Colour",1,0,0,1);
+  shader->setUniform("Colour",1.0f,0.0f,0.0f,1.0f);
   m_transform.setScale(m_scale,m_scale,m_scale*2);
   m_transform.setPosition(ngl::Vec3(m_scale,0,0));
   m_transform.setRotation(0,90,0);
@@ -56,7 +56,7 @@ void Axis::draw(const ngl::Mat4 &_globalTx )
   prim->draw("nglAXISCone");
 
   // y axis
-   shader->setShaderParam4f("Colour",0,1,0,1);
+   shader->setUniform("Colour",0.0f,1.0f,0.0f,1.0f);
    m_transform.setScale(m_scale,m_scale,m_scale*2);
    m_transform.setPosition(ngl::Vec3(0,-m_scale,0));
    m_transform.setRotation(90,0,0);
@@ -73,7 +73,7 @@ void Axis::draw(const ngl::Mat4 &_globalTx )
    prim->draw("nglAXISCone");
 
 //     // z axis
-   shader->setShaderParam4f("Colour",0,0,1,1);
+   shader->setUniform("Colour",0.0f,0.0f,1.0f,1.0f);
    m_transform.setScale(m_scale,m_scale,m_scale*2);
    m_transform.setPosition(ngl::Vec3(0,0,m_scale));
    m_transform.setRotation(0,0,-90);

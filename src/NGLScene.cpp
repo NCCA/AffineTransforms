@@ -168,8 +168,8 @@ void NGLScene::initializeGL()
   shader->setUniform("vertNormalColour",1.0f,1.0f,0.0f,1.0f);
   shader->setUniform("faceNormalColour",1.0f,0.0f,0.0f,1.0f);
 
-  shader->setShaderParam1i("drawFaceNormals",true);
-  shader->setShaderParam1i("drawVertexNormals",true);
+  shader->setUniform("drawFaceNormals",true);
+  shader->setUniform("drawVertexNormals",true);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -195,10 +195,10 @@ void NGLScene::loadMatricesToShader( )
   MVP=  MV*m_cam.getProjectionMatrix();
   normalMatrix=MV;
   normalMatrix.inverse();
-  shader->setShaderParamFromMat4("MV",MV);
-  shader->setShaderParamFromMat4("MVP",MVP);
-  shader->setShaderParamFromMat3("normalMatrix",normalMatrix);
-  shader->setShaderParamFromMat4("M",M);
+  shader->setUniform("MV",MV);
+  shader->setUniform("MVP",MVP);
+  shader->setUniform("normalMatrix",normalMatrix);
+  shader->setUniform("M",M);
 }
 //----------------------------------------------------------------------------------------------------------------------
 //This virtual function is called whenever the widget needs to be painted.
