@@ -10,8 +10,8 @@ Axis::Axis(std::string _shaderName, ngl::Real _scale )
   m_scale=_scale;
 
   ngl::VAOPrimitives *prim=ngl::VAOPrimitives::instance();
-  prim->createCylinder("nglAXISCylinder",0.02,2,60,60);
-  prim->createCone("nglAXISCone",0.05,0.2,30,30);
+  prim->createCylinder("nglAXISCylinder",0.02f,2,60,60);
+  prim->createCone("nglAXISCone",0.05f,0.2f,30,30);
 }
 
 void Axis::loadMatricesToShader()
@@ -20,9 +20,10 @@ void Axis::loadMatricesToShader()
   ngl::Mat4 MV;
   ngl::Mat4 MVP;
   ngl::Mat4 M;
-  M=m_transform.getMatrix()*m_globalMouseTx;
-  MV=  M*m_cam->getViewMatrix();
-  MVP=  MV*m_cam->getProjectionMatrix();
+  M=m_globalMouseTx*m_transform.getMatrix();
+  MV=  m_cam->getViewMatrix()*M;
+  MVP= m_cam->getProjectionMatrix()*MV;
+ // MVP= m_transform.getMatrix() * m_cam->getVPMatrix();
   shader->setUniform("MVP",MVP);
 }
 
@@ -36,8 +37,6 @@ void Axis::draw(const ngl::Mat4 &_globalTx )
   (*shader)[m_shaderName]->use();
   // Rotation based on the mouse position for our global
   // transform
-   // set this in the TX stack
-  // liberal use of { is encourage after each push
 
   shader->setUniform("Colour",1.0f,0.0f,0.0f,1.0f);
   m_transform.setScale(m_scale,m_scale,m_scale*2);
