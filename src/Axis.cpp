@@ -1,6 +1,4 @@
 #include "Axis.h"
-#include "ngl/Material.h"
-#include "ngl/Camera.h"
 #include <QDebug>
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -14,21 +12,21 @@ Axis::Axis(std::string _shaderName, ngl::Real _scale )
   prim->createCone("nglAXISCone",0.05f,0.2f,30,30);
 }
 
-void Axis::loadMatricesToShader()
+void Axis::loadMatricesToShader(const ngl::Mat4 &_view, const ngl::Mat4 &_project)
 {
   ngl::ShaderLib *shader=ngl::ShaderLib::instance();
   ngl::Mat4 MV;
   ngl::Mat4 MVP;
   ngl::Mat4 M;
   M=m_globalMouseTx*m_transform.getMatrix();
-  MV=  m_cam->getViewMatrix()*M;
-  MVP= m_cam->getProjectionMatrix()*MV;
+  MV=  _view*M;
+  MVP= _project*MV;
  // MVP= m_transform.getMatrix() * m_cam->getVPMatrix();
   shader->setUniform("MVP",MVP);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void Axis::draw(const ngl::Mat4 &_globalTx )
+void Axis::draw(const ngl::Mat4 &_view, const ngl::Mat4 &_project, const ngl::Mat4 &_globalTx )
 {
   ngl::VAOPrimitives *prim=ngl::VAOPrimitives::instance();
   // grab an instance of the shader manager
@@ -42,16 +40,16 @@ void Axis::draw(const ngl::Mat4 &_globalTx )
   m_transform.setScale(m_scale,m_scale,m_scale*2);
   m_transform.setPosition(ngl::Vec3(m_scale,0,0));
   m_transform.setRotation(0,90,0);
-  loadMatricesToShader();
+  loadMatricesToShader(_view,_project);
   prim->draw("nglAXISCylinder");
 
   m_transform.setPosition(ngl::Vec3(m_scale,0,0));
   m_transform.setRotation(0,90,0);
-  loadMatricesToShader();
+  loadMatricesToShader(_view,_project);
   prim->draw("nglAXISCone");
   m_transform.setPosition(ngl::Vec3(-m_scale,0,0));
   m_transform.setRotation(0,-90,0);
-  loadMatricesToShader();
+  loadMatricesToShader(_view,_project);
   prim->draw("nglAXISCone");
 
   // y axis
@@ -59,16 +57,16 @@ void Axis::draw(const ngl::Mat4 &_globalTx )
    m_transform.setScale(m_scale,m_scale,m_scale*2);
    m_transform.setPosition(ngl::Vec3(0,-m_scale,0));
    m_transform.setRotation(90,0,0);
-   loadMatricesToShader();
+   loadMatricesToShader(_view,_project);
    prim->draw("nglAXISCylinder");
 
    m_transform.setPosition(ngl::Vec3(0,m_scale,0));
    m_transform.setRotation(-90,0,0);
-   loadMatricesToShader();
+   loadMatricesToShader(_view,_project);
    prim->draw("nglAXISCone");
    m_transform.setPosition(ngl::Vec3(0,-m_scale,0));
    m_transform.setRotation(90,0,0);
-   loadMatricesToShader();
+   loadMatricesToShader(_view,_project);
    prim->draw("nglAXISCone");
 
 //     // z axis
@@ -76,15 +74,15 @@ void Axis::draw(const ngl::Mat4 &_globalTx )
    m_transform.setScale(m_scale,m_scale,m_scale*2);
    m_transform.setPosition(ngl::Vec3(0,0,m_scale));
    m_transform.setRotation(0,0,-90);
-   loadMatricesToShader();
+   loadMatricesToShader(_view,_project);
    prim->draw("nglAXISCylinder");
 
    m_transform.setPosition(ngl::Vec3(0,0,m_scale));
-   loadMatricesToShader();
+   loadMatricesToShader(_view,_project);
    prim->draw("nglAXISCone");
    m_transform.setPosition(ngl::Vec3(0,0,-m_scale));
    m_transform.setRotation(180,0,0);
-   loadMatricesToShader();
+   loadMatricesToShader(_view,_project);
    prim->draw("nglAXISCone");
 
 }
