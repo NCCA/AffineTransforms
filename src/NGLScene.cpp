@@ -285,6 +285,7 @@ void NGLScene::paintGL()
       prim->draw( s_vboNames[m_drawIndex]);
     }
   m_axis->draw(m_mouseGlobalTX);
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
