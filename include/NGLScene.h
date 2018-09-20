@@ -1,10 +1,10 @@
 #ifndef NGLSCENE_H_
 #define NGLSCENE_H_
 
-#include <QOpenGLWidget>
 #include "WindowParams.h"
 #include <ngl/Transformation.h>
-#include <Axis.h>
+#include "Axis.h"
+#include <QOpenGLWidget>
 #include <memory>
 //----------------------------------------------------------------------------------------------------------------------
 /// @file NGLScene.h

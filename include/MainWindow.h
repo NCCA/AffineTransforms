@@ -1,10 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include "NGLScene.h"
 #include "Axis.h"
-
+#include <QMainWindow>
 /// @namespace Ui our Ui namespace created from the MainWindow class
 namespace Ui {
     class MainWindow;
