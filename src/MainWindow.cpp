@@ -140,10 +140,10 @@ void MainWindow::setMatrix()
 void MainWindow::keyPressEvent(QKeyEvent *_event  )
 {
   this->setFocus(Qt::ActiveWindowFocusReason);
-  float increment=0.1;
+  float increment=0.1f;
   if ( QApplication::keyboardModifiers ()  == Qt::ShiftModifier)
   {
-    increment=-0.1;
+    increment=-0.1f;
   }
 
   // this method is called every time the main window recives a key event.
