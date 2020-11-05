@@ -65,7 +65,7 @@ NGLScene::NGLScene(QWidget *_parent )
 //----------------------------------------------------------------------------------------------------------------------
 void NGLScene::initializeGL()
 {
-  ngl::NGLInit::instance();
+  ngl::NGLInit::initialize();
 
   glClearColor(0.4f, 0.4f, 0.4f, 1.0f);			   // Grey Background
   // enable depth testing for drawing
@@ -83,62 +83,60 @@ void NGLScene::initializeGL()
   // The final two are near and far clipping planes of 0.5 and 10
   m_project=ngl::perspective(45.0f,720.0f/576.0f,0.5f,10.0f);
 
-  ngl::VAOPrimitives *prim=ngl::VAOPrimitives::instance();
-  prim->createSphere("sphere",1.0f,40.0f);
-  prim->createCylinder("cylinder",0.5f,1.4f,40.0f,40.0f);
-  prim->createCone("cone",0.5f,1.4f,20.0f,20.0f);
-  prim->createDisk("disk",0.5f,40.0f);
-  prim->createTrianglePlane("plane",1.0f,1.0f,10.0f,10.0f,ngl::Vec3(0.0f,1.0f,0.0f));
-  prim->createTorus("torus",0.15f,0.4f,40.0f,40.0f);
+  ngl::VAOPrimitives::createSphere("sphere",1.0f,40.0f);
+  ngl::VAOPrimitives::createCylinder("cylinder",0.5f,1.4f,40.0f,40.0f);
+  ngl::VAOPrimitives::createCone("cone",0.5f,1.4f,20.0f,20.0f);
+  ngl::VAOPrimitives::createDisk("disk",0.5f,40.0f);
+  ngl::VAOPrimitives::createTrianglePlane("plane",1.0f,1.0f,10.0f,10.0f,ngl::Vec3(0.0f,1.0f,0.0f));
+  ngl::VAOPrimitives::createTorus("torus",0.15f,0.4f,40.0f,40.0f);
   // set the bg colour
   glClearColor(0.5,0.5,0.5,0.0);
   m_axis.reset( new Axis(ColourShader,1.5f));
   // load the normal shader
-  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
 
-  shader->loadShader(PBR,"shaders/PBRVertex.glsl","shaders/PBRFragment.glsl");
-  shader->use(PBR);
-  shader->setUniform( "camPos", from );
+  ngl::ShaderLib::loadShader(PBR,"shaders/PBRVertex.glsl","shaders/PBRFragment.glsl");
+  ngl::ShaderLib::use(PBR);
+  ngl::ShaderLib::setUniform( "camPos", from );
   // these are "uniform" so will retain their values
-  shader->setUniform("lightPosition",0.0f, 2.0f, 2.0f);
-  shader->setUniform("lightColor",400.0f,400.0f,400.0f);
-  shader->setUniform("exposure",2.2f);
-  shader->setUniform("albedo",0.950f, 0.71f, 0.29f);
+  ngl::ShaderLib::setUniform("lightPosition",0.0f, 2.0f, 2.0f);
+  ngl::ShaderLib::setUniform("lightColor",400.0f,400.0f,400.0f);
+  ngl::ShaderLib::setUniform("exposure",2.2f);
+  ngl::ShaderLib::setUniform("albedo",0.950f, 0.71f, 0.29f);
 
-  shader->setUniform("metallic",1.02f);
-  shader->setUniform("roughness",0.38f);
-  shader->setUniform("ao",0.2f);
+  ngl::ShaderLib::setUniform("metallic",1.02f);
+  ngl::ShaderLib::setUniform("roughness",0.38f);
+  ngl::ShaderLib::setUniform("ao",0.2f);
 
 
-  shader->createShaderProgram(NormalShader);
+  ngl::ShaderLib::createShaderProgram(NormalShader);
   constexpr auto normalVert="normalVertex";
   constexpr auto normalGeo="normalGeo";
   constexpr auto normalFrag="normalFrag";
 
-  shader->attachShader(normalVert,ngl::ShaderType::VERTEX);
-  shader->attachShader(normalFrag,ngl::ShaderType::FRAGMENT);
-  shader->loadShaderSource(normalVert,"shaders/normalVertex.glsl");
-  shader->loadShaderSource(normalFrag,"shaders/normalFragment.glsl");
+  ngl::ShaderLib::attachShader(normalVert,ngl::ShaderType::VERTEX);
+  ngl::ShaderLib::attachShader(normalFrag,ngl::ShaderType::FRAGMENT);
+  ngl::ShaderLib::loadShaderSource(normalVert,"shaders/normalVertex.glsl");
+  ngl::ShaderLib::loadShaderSource(normalFrag,"shaders/normalFragment.glsl");
 
-  shader->compileShader(normalVert);
-  shader->compileShader(normalFrag);
-  shader->attachShaderToProgram(NormalShader,normalVert);
-  shader->attachShaderToProgram(NormalShader,normalFrag);
+  ngl::ShaderLib::compileShader(normalVert);
+  ngl::ShaderLib::compileShader(normalFrag);
+  ngl::ShaderLib::attachShaderToProgram(NormalShader,normalVert);
+  ngl::ShaderLib::attachShaderToProgram(NormalShader,normalFrag);
 
-  shader->attachShader(normalGeo,ngl::ShaderType::GEOMETRY);
-  shader->loadShaderSource(normalGeo,"shaders/normalGeo.glsl");
-  shader->compileShader(normalGeo);
-  shader->attachShaderToProgram(NormalShader,normalGeo);
+  ngl::ShaderLib::attachShader(normalGeo,ngl::ShaderType::GEOMETRY);
+  ngl::ShaderLib::loadShaderSource(normalGeo,"shaders/normalGeo.glsl");
+  ngl::ShaderLib::compileShader(normalGeo);
+  ngl::ShaderLib::attachShaderToProgram(NormalShader,normalGeo);
 
-  shader->linkProgramObject(NormalShader);
-  shader->use(NormalShader);
+  ngl::ShaderLib::linkProgramObject(NormalShader);
+  ngl::ShaderLib::use(NormalShader);
   // now pass the modelView and projection values to the shader
-  shader->setUniform("normalSize",0.1f);
-  shader->setUniform("vertNormalColour",1.0f,1.0f,0.0f,1.0f);
-  shader->setUniform("faceNormalColour",1.0f,0.0f,0.0f,1.0f);
+  ngl::ShaderLib::setUniform("normalSize",0.1f);
+  ngl::ShaderLib::setUniform("vertNormalColour",1.0f,1.0f,0.0f,1.0f);
+  ngl::ShaderLib::setUniform("faceNormalColour",1.0f,0.0f,0.0f,1.0f);
 
-  shader->setUniform("drawFaceNormals",true);
-  shader->setUniform("drawVertexNormals",true);
+  ngl::ShaderLib::setUniform("drawFaceNormals",true);
+  ngl::ShaderLib::setUniform("drawVertexNormals",true);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -153,8 +151,7 @@ void NGLScene::resizeGL(int _w, int _h )
 
 void NGLScene::loadMatricesToShader( )
 {
-  ngl::ShaderLib* shader = ngl::ShaderLib::instance();
-  shader->use("PBR");
+  ngl::ShaderLib::use("PBR");
   struct transform
   {
     ngl::Mat4 MVP;
@@ -168,8 +165,8 @@ void NGLScene::loadMatricesToShader( )
    t.MVP=m_project*m_view*t.M;
    t.normalMatrix=t.M;
    t.normalMatrix.inverse().transpose();
-   shader->setUniformBuffer("TransformUBO",sizeof(transform),&t.MVP.m_00);
-   shader->setUniform("albedo",m_colour);
+   ngl::ShaderLib::setUniformBuffer("TransformUBO",sizeof(transform),&t.MVP.m_00);
+   ngl::ShaderLib::setUniform("albedo",m_colour);
 
 
 }
@@ -178,8 +175,6 @@ void NGLScene::loadMatricesToShader( )
 // this is our main drawing routine
 void NGLScene::paintGL()
 {
-  // grab an instance of the shader manager
-  ngl::ShaderLib *shader=ngl::ShaderLib::instance();
   // clear the screen and depth buffer
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // Rotation based on the mouse position for our global
@@ -211,7 +206,7 @@ void NGLScene::paintGL()
   }
   emit matrixDirty(m_transform);
   // now set this value in the shader for the current ModelMatrix
-  (*shader)[PBR]->use();
+  ngl::ShaderLib::use(PBR);
 
 
   // Rotation based on the mouse position for our global transform
@@ -229,9 +224,7 @@ void NGLScene::paintGL()
 
 
     loadMatricesToShader();
-    // get the VBO instance and draw the built in teapot
-
-    ngl::VAOPrimitives *prim=ngl::VAOPrimitives::instance();
+    
     if( m_wireframe)
     {
       glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
@@ -241,19 +234,19 @@ void NGLScene::paintGL()
       glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     }
 
-    prim->draw( s_vboNames[m_drawIndex]);
+    ngl::VAOPrimitives::draw( s_vboNames[m_drawIndex]);
     if(m_drawNormals)
     {
-      (*shader)[NormalShader]->use();
+      ngl::ShaderLib::use(NormalShader);
       ngl::Mat4 MV;
       ngl::Mat4 MVP;
 
       MV=m_view*m_mouseGlobalTX*m_transform;
       MVP=m_project*MV;
-      shader->setUniform("MVP",MVP);
-      shader->setUniform("normalSize",m_normalSize/10.0f);
+      ngl::ShaderLib::setUniform("MVP",MVP);
+      ngl::ShaderLib::setUniform("normalSize",m_normalSize/10.0f);
 
-      prim->draw( s_vboNames[m_drawIndex]);
+      ngl::VAOPrimitives::draw( s_vboNames[m_drawIndex]);
     }
   m_axis->draw(m_view,m_project,m_mouseGlobalTX);
 }
