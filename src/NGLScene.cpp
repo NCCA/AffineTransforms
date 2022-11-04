@@ -449,8 +449,8 @@ void NGLScene::setMatrixOrder(int _index)
 //----------------------------------------------------------------------------------------------------------------------
 void NGLScene::setEuler(float _angle, float _x, float _y, float _z)
 {
-  m_euler = 1.0f;
-  m_euler.euler(_angle, _x, _y, _z);
+
+  m_euler = ngl::Mat4::euler(_angle, _x, _y, _z);
   update();
 }
 
