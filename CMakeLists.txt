@@ -46,10 +46,9 @@ ${PROJECT_SOURCE_DIR}/include/NGLScene.h
 ${PROJECT_SOURCE_DIR}/include/Axis.h
   
 )
-if ( Qt6_FOUND )
-    target_link_libraries(${TargetName} PRIVATE  NGL Qt::Widgets Qt::OpenGL Qt::OpenGLWidgets)
-else()
     target_link_libraries(${TargetName} PRIVATE  NGL Qt::Widgets Qt::OpenGL )
+if ( Qt6_FOUND )
+    target_link_libraries(${TargetName} PRIVATE  Qt::OpenGLWidgets )
 endif()
 add_custom_target(CopyShadersAndfonts ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
